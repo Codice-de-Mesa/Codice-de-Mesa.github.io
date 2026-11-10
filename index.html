@@ -17,7 +17,7 @@
 #dice .last{position:relative;min-height:112px;overflow:hidden}#dice .last>span{position:relative;z-index:1}#dice .last>.dsk{position:absolute;left:50%;top:50%;width:104px;height:104px;transform:translate(-50%,-50%);z-index:0;opacity:.95;pointer-events:none;display:block}
 #dice .last .dsk svg,.skt svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
 #dice .last .lb,#dice .last .dt{text-shadow:0 1px 3px var(--bg),0 0 6px var(--bg)}
-#dice .last .tot{color:var(--dki,var(--accent));text-shadow:0 1px 3px rgba(0,0,0,.35)}#dice .last .tot.crit{color:var(--dki,var(--ok));text-shadow:0 0 10px var(--ok),0 0 3px var(--ok)}#dice .last .tot.fail{color:var(--dki,var(--bad));text-shadow:0 0 10px var(--bad),0 0 3px var(--bad)}
+#dice .last .tot{color:var(--dki,var(--accent));text-shadow:0 1px 3px rgba(0,0,0,.35)}#dice .last .lrow{display:flex;align-items:center;justify-content:center;gap:14px;position:relative;z-index:1}#dice .last .lrow>.dsk{position:static;transform:none;width:84px;height:84px;flex:none;opacity:.95}#dice .last .lrow>.tot{font-size:3rem;min-width:1.2em;text-align:left;color:var(--dke,var(--accent));text-shadow:0 0 6px color-mix(in srgb,var(--dk1,#fff) 55%,transparent),0 0 16px color-mix(in srgb,var(--dk1,#fff) 35%,transparent),0 0 30px color-mix(in srgb,var(--dk1,#fff) 20%,transparent);animation:tglow 2.6s ease-in-out infinite alternate}#dice .last .lrow>.tot.crit{color:var(--ok);text-shadow:0 0 10px var(--ok),0 0 3px var(--ok)}#dice .last .lrow>.tot.fail{color:var(--bad);text-shadow:0 0 10px var(--bad),0 0 3px var(--bad)}@keyframes tglow{from{filter:brightness(.95)}to{filter:brightness(1.12)}}#dice .last .tot.crit{color:var(--dki,var(--ok));text-shadow:0 0 10px var(--ok),0 0 3px var(--ok)}#dice .last .tot.fail{color:var(--dki,var(--bad));text-shadow:0 0 10px var(--bad),0 0 3px var(--bad)}
 .sg{display:grid;grid-template-columns:1fr 1fr;max-width:300px;border:1px solid var(--accent);border-radius:var(--r);overflow:hidden;margin:6px 0 4px}.sg button{padding:9px 6px;border:0;background:transparent;color:var(--fg2);font:600 .78rem var(--f-body);letter-spacing:.06em;cursor:pointer}.sg button.on{background:var(--accent);color:var(--accent-ink,#fff)}
 .cfh{margin:16px 0 4px;font:600 1rem var(--f-body);letter-spacing:0;text-transform:none}.cfs{margin:0 0 6px;font-size:.8rem}
 .skg{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}.skt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px 8px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);color:var(--fg);cursor:pointer}.skt:hover{border-color:var(--accent)}.skt.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}.skt .dsk2{width:54px;height:54px;display:block}.skt small{font:600 .72rem var(--f-body)}
@@ -87428,7 +87428,7 @@ function tabData(c){
 /* ---------- dados ---------- */
 function renderDice(){
   $('#dice').innerHTML='<h2>Dados <button class="btn sm" data-act="clear-log" style="font-family:var(--f-body);letter-spacing:0;text-transform:none">Limpar</button></h2>'+
-  '<div class="last" id="lastRoll"><span class="dsk"></span><span class="lb">Nenhuma rolagem</span><span class="dt">Clique em um atributo, perícia ou dado</span></div>'+
+  '<div class="last" id="lastRoll"><span class="lb">Nenhuma rolagem</span><div class="lrow"><span class="dsk"></span></div><span class="dt">Clique em um atributo, perícia ou dado</span></div>'+
   '<div class="dgrid">'+[3,4,6,8,10,12,20,100].map(n=>'<button class="die" data-act="die" data-s="'+n+'">d'+n+'</button>').join('')+'<button class="die" data-act="die" data-s="2">d2</button></div>'+
   '<div class="drow"><label>Qtd.<input id="dCount" type="number" min="1" max="50" value="1"></label><label>Mod.<input id="dMod" type="number" value="0"></label><label>Vantagem<select id="dAdv"><option value="0">Normal</option><option value="1">Vantagem / bônus</option><option value="2">Bônus ×2</option><option value="-1">Desvantagem / penalidade</option><option value="-2">Penalidade ×2</option></select></label></div>'+
   '<form class="expr" id="exprForm"><input id="expr" placeholder="Ex.: 2d6+3 ou 4d6kh3" aria-label="Expressão de dados"><button class="btn pri">Rolar</button></form><button type="button" class="btn" id="pushBtn" data-act="coc-push" hidden style="margin-top:8px">Forçar última rolagem</button><div class="log" id="log"></div>';
@@ -87439,7 +87439,7 @@ function renderLog(e){
   l.innerHTML=state.log.map(x=>'<div class="le"><span><b style="all:unset;font-weight:600">'+esc(x.label)+'</b> · '+esc(x.formula)+'</span><b>'+x.total+'</b><small>'+esc(x.detail)+'</small></div>').join('');
   if(!e)return;
   const lr=$('#lastRoll');
-  if(lr){lr.innerHTML='<span class="dsk"></span><span class="lb">'+esc(e.label)+' · '+esc(e.formula)+'</span><span class="tot '+e.flag+'">'+e.total+'</span><span class="dt">'+esc(e.detail)+(e.flag==='crit'?' · máximo!':e.flag==='fail'?' · 1 natural':'')+'</span>';applySkin()}
+  if(lr){lr.innerHTML='<span class="lb">'+esc(e.label)+' · '+esc(e.formula)+'</span><div class="lrow"><span class="dsk"></span><span class="tot '+e.flag+'">'+e.total+'</span></div><span class="dt">'+esc(e.detail)+(e.flag==='crit'?' · máximo!':e.flag==='fail'?' · 1 natural':'')+'</span>';applySkin()}
   const t=$('#toast');t.innerHTML='<b>'+e.total+'</b>'+esc(e.label);t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
@@ -87517,8 +87517,8 @@ function act(a,t){
   case 'reset-theme':state.prefs=defPrefs();applyPrefs();persist('prefs');renderTab();break;
   case 'die':{
     const S=num(t.dataset.s),n=Math.max(1,Math.min(50,num($('#dCount').value)||1)),m=num($('#dMod').value),adv=advMode();
-    if(S===20&&n===1&&adv){const a1=die(20),b1=die(20),p=adv>0?Math.max(a1,b1):Math.min(a1,b1);pushLog({label:'d20 '+(adv>0?'vantagem':'desvantagem'),formula:'1d20'+fmt(m),detail:'['+a1+', '+b1+'] → '+p+fmt(m),total:p+m,flag:p===20?'crit':p===1?'fail':''})}
-    else rollExpr(n+'d'+S+(m?(m>0?'+'+m:m):''),n+'d'+S);
+    const k=n+Math.abs(adv),low=adv<0,d=Array.from({length:k},()=>die(S)),pick=low?Math.min.apply(null,d):Math.max.apply(null,d);
+    pushLog({label:k+'d'+S,formula:k+'d'+S+fmt(m),detail:(k>1?'['+d.join(', ')+'] → '+pick+(low?' (menor)':' (maior)'):'['+d[0]+']')+fmt(m),total:pick+m,flag:S>=20?(pick===S?'crit':pick===1?'fail':''):''});
     break}
   case 'clear-log':state.log=[];renderLog();break;
   case 'copy-one':case 'copy-all':{
@@ -87786,7 +87786,7 @@ function mzPanel(){const el=document.getElementById('mzPanel');if(!el)return;el.
   const P=MZ.panel,M=MZ.M,sc=mzScene(),T={age:'Agentes',tok:'Tokens',esc:'Escudo',cen:'Cenas',rol:'Rolagens'};let h='<h2>'+T[P]+'<button data-z="pc" aria-label="Fechar">✕</button></h2>';
   if(P==='age'){const q=(MZ.q||'').toLowerCase(),L=mzAgents().filter(a=>!q||String(a.s.n||'').toLowerCase().includes(q));h+='<input class="q" data-q placeholder="Pesquisar" value="'+esc(MZ.q||'')+'">'+(L.length?L.map(a=>{const s=a.s||{},hide=s.pr&&!MZ.gm&&a.owner!==mzUid();return '<div class="ag"><div class="im">'+(s.img&&!hide?'<img alt="" src="'+esc(s.img)+'">':esc(kIni(s.n)))+'</div><div class="bd"><b>'+esc(s.n||'Agente')+'</b><span>'+esc(s.sub||s.sn||'')+'</span><div class="row"><button class="bt p sm" data-z="ficha" data-v="'+esc(a.id)+'">Ver Ficha</button>'+(MZ.gm&&sc?'<button class="bt sm" data-z="agtok" data-v="'+esc(a.id)+'">No mapa</button>':'')+'</div></div></div>'}).join(''):'<p style="color:#9a9aa6">Nenhum agente. Adicione fichas à campanha (ou crie uma ficha).</p>')}
   else if(P==='tok'){const L=sc?M.tokens.filter(t=>t.sc===sc.id&&(MZ.gm||!t.hid)):[],t=MZ.sel&&mzTok(MZ.sel);
-    if(t&&mzCan(t)){h+='<h3>Token selecionado</h3><div class="tr" style="cursor:default;flex-direction:column;align-items:stretch;gap:10px"><label class="fl" style="margin:0">Nome</label><input class="full" data-t="name" value="'+esc(t.name)+'" '+(MZ.gm?'':'disabled')+'><label class="fl" style="margin:0">Tamanho (em quadrados da grade)</label><div class="row">'+mzSizeSel(t.sz,'data-t="sz"')+'<input type="number" step="0.5" min="0.25" max="12" value="'+t.sz+'" data-t="szn" style="width:76px" title="Tamanho personalizado"></div>'+(MZ.gm?'<div class="row"><label style="font-size:.8rem">Cor</label><input type="color" data-t="col" value="'+esc(t.col||'#a347ff')+'"><button class="bt sm" data-z="thid">'+(t.hid?'Mostrar aos jogadores':'Ocultar dos jogadores')+'</button></div><label class="fl" style="margin:0">Controlado por</label><select data-t="own"><option value="">Mestre</option>'+mzMembers().map(m=>'<option value="'+esc(m.id)+'"'+(t.own===m.id?' selected':'')+'>'+esc(m.n)+'</option>').join('')+'</select><div class="row"><label class="bt sm" style="cursor:pointer">Trocar imagem<input type="file" accept="image/*" data-file="tokimg" hidden></label></div><div class="row"><label class="bt sm" style="cursor:pointer">Modelo 3D (.glb)<input type="file" accept=".glb,.gltf" data-file="glb" hidden></label>'+(t.glb?'<small style="color:#9a9aa6">'+esc(t.glbn||'modelo')+'</small><button class="bt d sm" data-z="rmglb">Tirar modelo</button>':'')+'</div><div class="row"><button class="bt d sm" data-z="deltok" data-v="'+t.id+'">Remover</button></div>':'')+'</div>'}
+    if(t&&mzCan(t)){h+='<h3>Token selecionado</h3><div class="tr" style="cursor:default;flex-direction:column;align-items:stretch;gap:10px"><label class="fl" style="margin:0">Nome</label><input class="full" data-t="name" value="'+esc(t.name)+'" '+(MZ.gm?'':'disabled')+'><label class="fl" style="margin:0">Tamanho (em quadrados da grade)</label><div class="row">'+mzSizeSel(t.sz,'data-t="sz"')+'<input type="number" step="0.5" min="0.25" max="12" value="'+t.sz+'" data-t="szn" style="width:76px" title="Tamanho personalizado"></div>'+(MZ.gm?'<div class="row"><label style="font-size:.8rem">Cor</label><input type="color" data-t="col" value="'+esc(t.col||'#a347ff')+'"><button class="bt sm" data-z="thid">'+(t.hid?'Mostrar aos jogadores':'Ocultar dos jogadores')+'</button></div><label class="fl" style="margin:0">Controlado por</label><select data-t="own"><option value="">Mestre</option>'+mzMembers().map(m=>'<option value="'+esc(m.id)+'"'+(t.own===m.id?' selected':'')+'>'+esc(m.n)+'</option>').join('')+'</select><div class="row"><label class="bt sm" style="cursor:pointer">Trocar imagem<input type="file" accept="image/*" data-file="tokimg" hidden></label></div><div class="row"><label class="bt sm" style="cursor:pointer">Modelo 3D (glb, gltf, obj, fbx)<input type="file" multiple accept=".glb,.gltf,.obj,.fbx,.mtl,.bin,.png,.jpg,.jpeg,.webp" data-file="glb" hidden></label>'+(t.glb?'<small style="color:#9a9aa6">'+esc(t.glbn||'modelo')+'</small><button class="bt d sm" data-z="rmglb">Tirar modelo</button>':'')+'</div><div class="row"><button class="bt d sm" data-z="deltok" data-v="'+t.id+'">Remover</button></div>':'')+'</div>'}
     h+='<h3>Em cena</h3>'+(L.length?L.map(x=>'<div class="tr'+(MZ.sel===x.id?' on':'')+'" data-z="seltok" data-v="'+x.id+'"><div class="th" style="border-color:'+esc(x.col)+';background:'+esc(x.col)+'">'+(mzTImg(x)?'<img alt="" src="'+esc(mzTImg(x))+'">':esc(kIni(x.name)))+'</div><div class="nm">'+esc(x.name)+(x.hid?' <small style="color:#9a9aa6">(oculto)</small>':'')+'</div><small style="color:#9a9aa6">'+x.sz+'×</small></div>').join(''):'<p style="color:#9a9aa6;font-style:italic;text-align:center;margin:22px 0">Ainda não foi adicionado nenhum token nessa cena</p>');
     if(MZ.gm){h+='<h3>Biblioteca</h3>'+(M.lib.length?M.lib.map(x=>'<div class="tr" style="cursor:default"><div class="th" style="border-color:'+esc(x.col)+';background:'+esc(x.col)+'">'+(mzTImg(x)?'<img alt="" src="'+esc(mzTImg(x))+'">':esc(kIni(x.name)))+'</div><div class="nm">'+esc(x.name)+' <small style="color:#9a9aa6">'+x.sz+'×</small></div><button class="bt sm" data-z="libadd" data-v="'+x.id+'">Usar</button><button class="bt d sm" data-z="libdel" data-v="'+x.id+'">✕</button></div>').join(''):'<p style="color:#9a9aa6;font-style:italic;text-align:center;margin:14px 0">Você ainda não criou nenhum token</p>')+
       (MZ.form&&MZ.form.k==='token'?mzTokForm():'<button class="bt p full" style="margin-top:18px" data-z="newtok">Criar novo token</button>')}}
@@ -87839,7 +87839,7 @@ function mzChange(e){const t=e.target,M=MZ.M;
     else if(k==='newtok')mzRead(f,0,160,u=>{MZ.form.img=u;mzPanel()});
     else if(k==='tokimg')mzRead(f,0,160,u=>{const tk=mzTok(MZ.sel);if(tk){tk.img=u;mzCommit()}});
     else if(k==='sceneimg')mzRead(f,1600,0,(u,w,h)=>{const s=M.scenes.find(x=>x.id===MZ.edit);if(s){const kx=w/s.w;s.img=u;s.w=w;s.h=h;s.cell=Math.max(16,Math.round(s.cell*kx));M.tokens.filter(q=>q.sc===s.id).forEach(q=>{q.x*=kx;q.y*=kx});mzFit();mzCommit(M.live===s.id)}});
-    else if(k==='glb'){const tk=mzTok(MZ.sel);if(tk){if(f.size>10*1048576){note('Modelo muito grande (máx. 10 MB). Reduza polígonos/texturas.')}else f.arrayBuffer().then(buf=>{const id=mzId();MZ.glbs[id]=buf;mzSet('g_'+MZ.cid+'_'+id,buf);tk.glb=id;tk.glbn=f.name;mzCommit();note(MZ.is3d?'Modelo carregado.':'Modelo carregado. Clique em 3D para ver.')})}}
+    else if(k==='glb'){const tk=mzTok(MZ.sel),fl=[...t.files];if(tk){const tot=fl.reduce((a,x)=>a+x.size,0);if(tot>12*1048576){note('Modelo muito grande (máx. 12 MB no total). Reduza polígonos/texturas.')}else if(!fl.some(x=>MZ_MEXT.test(x.name))){note('Escolha um arquivo .glb, .gltf, .obj ou .fbx (pode marcar junto .mtl e texturas).')}else mzPack(fl).then(buf=>{const id=mzId(),mn=fl.find(x=>MZ_MEXT.test(x.name)).name;MZ.glbs[id]=buf;mzSet('g_'+MZ.cid+'_'+id,buf);tk.glb=id;tk.glbn=mn;mzCommit();note(MZ.is3d?'Modelo carregado.':'Modelo carregado. Clique em 3D para ver.')})}t.value=''}
     t.value='';return}
   if(t.dataset.f){const f=MZ.form;if(!f)return;f[t.dataset.f]=t.type==='number'?+t.value:t.value;if(t.dataset.f==='name'||t.dataset.f==='sz'||t.dataset.f==='col')return;return}
   if(t.dataset.t){const tk=mzTok(MZ.sel);if(!tk)return;const k=t.dataset.t;if(k==='name')tk.name=t.value;else if(k==='sz'||k==='szn')tk.sz=Math.max(.25,Math.min(12,+t.value||1));else if(k==='col')tk.col=t.value;else if(k==='own')tk.own=t.value||null;const sc=mzScene();if(sc&&(k==='sz'||k==='szn'))mzSnap(tk,sc);mzCommit();return}
@@ -87895,10 +87895,10 @@ function mz3Make(t,ks){const T=MZ.T,g=new T.Group(),r=Math.max(.2,t.sz*.46),col=
   else{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');x.fillStyle='#'+col.getHexString();x.fillRect(0,0,128,128);x.fillStyle='#fff';x.font='700 80px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(kIni(t.name),64,70);const tx=new T.CanvasTexture(c);tx.colorSpace=T.SRGBColorSpace;disc.material.map=tx;disc.material.color.set(0xffffff)}
   g.add(bb);o.bb=bb;
   const lb=mz3Label(t.name,Math.max(.8,Math.min(2,t.sz*.6)));lb.position.y=.14+dr*2+.5;g.add(lb);o.lb=lb;
-  if(buf){const ld=new T.GLTFLoader();ld.parse(buf.slice(0),'',gl=>{if(mz3.ob[t.id]!==o)return;const m=gl.scene,b=new T.Box3().setFromObject(m),sz=b.getSize(new T.Vector3());
+  if(buf){mzLoadModel(buf,(scn,anims)=>{if(mz3.ob[t.id]!==o)return;const gl={animations:anims},m=scn,b=new T.Box3().setFromObject(m),sz=b.getSize(new T.Vector3());
       const k=Math.min(t.sz*.92/Math.max(sz.x,sz.z,.0001),t.sz*3/Math.max(sz.y,.0001));m.scale.setScalar(k);const b2=new T.Box3().setFromObject(m),c2=b2.getCenter(new T.Vector3());m.position.x-=c2.x;m.position.z-=c2.z;m.position.y+=.14-b2.min.y;
       m.traverse(n=>{if(n.isMesh){n.castShadow=true;n.receiveShadow=true}});g.remove(bb);o.bb=null;g.add(m);lb.position.y=.14+Math.min(t.sz*3,sz.y*k)+.5;
-      if(gl.animations&&gl.animations.length){const mx=new T.AnimationMixer(m);mx.clipAction(gl.animations[0]).play();mz3.mix.push(mx);o.mixer=mx}mz3Fade(o,t.hid)},er=>{note('Modelo 3D inválido ou comprimido (Draco). Usando o disco.');console.warn(er)})}
+      if(gl.animations&&gl.animations.length){const mx=new T.AnimationMixer(m);mx.clipAction(gl.animations[0]).play();mz3.mix.push(mx);o.mixer=mx}mz3Fade(o,t.hid)},er=>{note(er&&/FBX/.test(er.message||'')?er.message+' Usando o disco.':'Modelo 3D inválido ou comprimido (Draco). Usando o disco.');console.warn(er)})}
   mz3Fade(o,t.hid);return o}
 function mz3Rm(id){const o=mz3.ob[id];if(!o)return;mz3.s.remove(o.g);if(o.mixer){mz3.mix=mz3.mix.filter(m=>m!==o.mixer)}o.g.traverse(n=>{if(n.geometry)n.geometry.dispose();if(n.material){const ms=Array.isArray(n.material)?n.material:[n.material];ms.forEach(m=>{if(m.map)m.map.dispose();m.dispose()})}});delete mz3.ob[id]}
 function mz3Sync(){const T=MZ.T,sc=mzScene(),S=mz3.s;if(!sc){Object.keys(mz3.ob).forEach(mz3Rm);mz3Disp(mz3.pl);mz3Disp(mz3.base);mz3Disp(mz3.grid);mz3.pl=mz3.base=mz3.grid=null;mz3.sig='';return}
@@ -88021,6 +88021,127 @@ function mzTemplateUrl(key){const cv=document.createElement('canvas');mzTemplate
 function mzTplGallery(){let g=MZ.tpl||(MZ.tpl={});return '<label class="fl" style="margin-top:26px;font-size:.85rem">Modelos prontos (D&amp;D)</label>'+['Florestas','Cidades medievais'].map(cat=>'<div style="font-size:.72rem;color:#9a9aa6;text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px">'+cat+'</div><div class="tg">'+MZ_TPL.map((t,i)=>t[0]===cat?'<button class="tt" data-z="tpl" data-v="'+i+'"><canvas data-tc="'+t[2]+'" width="240" height="150"></canvas><span>'+t[1]+'</span></button>':'').join('')+'</div>').join('')}
 function mzTplThumbs(){document.querySelectorAll('#mz canvas[data-tc]').forEach((cv,i)=>{if(cv.dataset.ok)return;cv.dataset.ok=1;setTimeout(()=>{try{mzTemplate(cv.dataset.tc,cv,240,150)}catch(e){}},30+i*40)})}
 
+
+/* ================= MODELOS 3D: pacote (glb/gltf/obj/mtl/texturas) ================= */
+const MZ_MEXT=/\.(glb|gltf|obj|fbx)$/i,MZ_AUX=/\.(mtl|bin|png|jpe?g|webp|gif|bmp|tga)$/i;
+function mzPack(files){return Promise.all(files.map(f=>f.arrayBuffer().then(b=>({n:f.name,b:b})))).then(L=>{
+  const order=['glb','gltf','obj','fbx'];let main=null;for(const e of order){main=L.find(x=>x.n.toLowerCase().endsWith('.'+e));if(main)break}
+  if(!main)throw new Error('nomain');
+  const keep=L.filter(x=>x===main||(main.n.toLowerCase().endsWith('.glb')?false:true));
+  const head=new TextEncoder().encode(JSON.stringify({main:main.n,files:keep.map(x=>[x.n,x.b.byteLength])})),tot=8+head.length+keep.reduce((s,x)=>s+x.b.byteLength,0),out=new Uint8Array(tot),dv=new DataView(out.buffer);
+  out.set([67,77,80,75],0);dv.setUint32(4,head.length);out.set(head,8);let o=8+head.length;keep.forEach(x=>{out.set(new Uint8Array(x.b),o);o+=x.b.byteLength});return out.buffer})}
+function mzUnpack(buf){const u=new Uint8Array(buf);if(!(u[0]===67&&u[1]===77&&u[2]===80&&u[3]===75))return{main:'model.glb',files:{'model.glb':buf}};
+  const dv=new DataView(buf),hl=dv.getUint32(4),h=JSON.parse(new TextDecoder().decode(u.subarray(8,8+hl))),F={};let o=8+hl;h.files.forEach(f=>{F[f[0]]=buf.slice(o,o+f[1]);o+=f[1]});return{main:h.main,files:F}}
+function mzBase(p){return decodeURIComponent(String(p).split(/[\\/]/).pop()).toLowerCase()}
+function mzMimeOf(n){n=n.toLowerCase();return/\.png$/.test(n)?'image/png':/\.jpe?g$/.test(n)?'image/jpeg':/\.webp$/.test(n)?'image/webp':/\.gif$/.test(n)?'image/gif':'application/octet-stream'}
+function mzParseMtl(txt,tex){const M={};let c=null;txt.split(/\r?\n/).forEach(l=>{l=l.trim();if(!l||l[0]==='#')return;const p=l.split(/\s+/),k=p[0].toLowerCase(),v=p.slice(1);
+  if(k==='newmtl'){c=M[v.join(' ')]={kd:[.8,.8,.8],d:1,map:null,ke:null};}else if(!c)return;
+  else if(k==='kd')c.kd=v.slice(0,3).map(Number);else if(k==='d')c.d=+v[0];else if(k==='tr')c.d=1-v[0];else if(k==='ke')c.ke=v.slice(0,3).map(Number);
+  else if(k==='map_kd'){const n=mzBase(v[v.length-1]);if(tex[n])c.map=n}});return M}
+function mzParseObj(txt,mtls,tex){const T=MZ.T,V=[],N=[],U=[],G={};let mat='',mtl={};
+  txt.split(/\r?\n/).forEach(l=>{l=l.trim();if(!l||l[0]==='#')return;const p=l.split(/\s+/),k=p[0];
+    if(k==='v')V.push([+p[1],+p[2],+p[3]]);else if(k==='vn')N.push([+p[1],+p[2],+p[3]]);else if(k==='vt')U.push([+p[1],+p[2]]);
+    else if(k==='usemtl')mat=p.slice(1).join(' ');
+    else if(k==='f'){const g=G[mat]||(G[mat]={p:[],n:[],u:[],hn:0});const ix=p.slice(1).map(s=>{const a=s.split('/');const r=(i,L)=>{i=parseInt(i,10);return isNaN(i)?-1:(i<0?L+i:i-1)};return[r(a[0],V.length),r(a[1],U.length),r(a[2],N.length)]});
+      for(let i=1;i<ix.length-1;i++)[ix[0],ix[i],ix[i+1]].forEach(q=>{const v=V[q[0]]||[0,0,0];g.p.push(v[0],v[1],v[2]);const u=U[q[1]]||[0,0];g.u.push(u[0],u[1]);if(q[2]>=0){const n=N[q[2]];g.n.push(n[0],n[1],n[2]);g.hn=1}else g.n.push(0,0,0)})}});
+  const grp=new T.Group(),cache={};
+  Object.keys(G).forEach(name=>{const g=G[name],ge=new T.BufferGeometry();ge.setAttribute('position',new T.Float32BufferAttribute(g.p,3));ge.setAttribute('uv',new T.Float32BufferAttribute(g.u,2));
+    if(g.hn)ge.setAttribute('normal',new T.Float32BufferAttribute(g.n,3));else ge.computeVertexNormals();
+    const d=mtls[name]||{kd:[.8,.8,.8],d:1},m=new T.MeshStandardMaterial({color:new T.Color(d.kd[0],d.kd[1],d.kd[2]),roughness:.8,metalness:0,side:T.DoubleSide});
+    if(d.d<1){m.transparent=true;m.opacity=Math.max(.05,d.d)}
+    if(d.map){if(!cache[d.map]){const im=new Image();const tx=new T.Texture(im);tx.colorSpace=T.SRGBColorSpace;tx.wrapS=tx.wrapT=T.RepeatWrapping;im.onload=()=>{tx.needsUpdate=true};im.src=URL.createObjectURL(new Blob([tex[d.map]],{type:mzMimeOf(d.map)}));cache[d.map]=tx}m.map=cache[d.map];m.color.set(0xffffff)}
+    grp.add(new T.Mesh(ge,m))});return grp}
+/* carrega qualquer pacote -> cb(scene,animations) */
+function mzLoadModel(buf,cb0,er){const cb=(a,b)=>setTimeout(()=>cb0(a,b),0);let P;try{P=mzUnpack(buf)}catch(e){er(e);return}const T=MZ.T,ext=(P.main.match(/\.(\w+)$/)||[])[1].toLowerCase(),tex={},dec=b=>new TextDecoder().decode(b);
+  Object.keys(P.files).forEach(n=>{tex[mzBase(n)]=P.files[n]});
+  try{
+    if(ext==='obj'){let mt={};Object.keys(P.files).forEach(n=>{if(/\.mtl$/i.test(n))Object.assign(mt,mzParseMtl(dec(P.files[n]),tex))});
+      const g=mzParseObj(dec(P.files[P.main]),mt,tex);cb(g,[]);return}
+    if(ext==='fbx'){mzParseFbx(P.files[P.main]).then(o=>cb(o,[])).catch(er);return}
+    const urls=[],mgr=new T.LoadingManager();mgr.setURLModifier(u=>{const b=mzBase(u);if(tex[b]&&b!==mzBase(P.main)){const x=URL.createObjectURL(new Blob([tex[b]],{type:mzMimeOf(b)}));urls.push(x);return x}return u});
+    const ld=new T.GLTFLoader(mgr),data=ext==='glb'?P.files[P.main]:dec(P.files[P.main]);
+    ld.parse(data,'',gl=>{cb(gl.scene,gl.animations||[])},er)}catch(e){er(e)}}
+
+
+/* ===== FBX binário (leitor próprio, sem FBXLoader): malhas, cores, hierarquia e transformações ===== */
+async function mzFbxInflate(u8){const ds=new DecompressionStream('deflate'),w=ds.writable.getWriter();w.write(u8);w.close();return new Uint8Array(await new Response(ds.readable).arrayBuffer())}
+async function mzFbxRead(buf){const u=new Uint8Array(buf),dv=new DataView(buf);
+  if(String.fromCharCode.apply(null,u.subarray(0,18))!=='Kaydara FBX Binary'){throw new Error('FBX em texto (ASCII) não é suportado. Exporte como FBX binário, glTF ou OBJ.')}
+  const ver=dv.getUint32(23,true),big=ver>=7500,nul=big?25:13,td=new TextDecoder();let p=27;
+  const rd=async(end)=>{const eo=big?Number(dv.getBigUint64(p,true)):dv.getUint32(p,true);const np=big?Number(dv.getBigUint64(p+8,true)):dv.getUint32(p+4,true);const hl=big?24:12;
+    if(eo===0){p+=nul;return null}const nl=u[p+hl];const name=td.decode(u.subarray(p+hl+1,p+hl+1+nl));p+=hl+1+nl;const pr=[];
+    for(let i=0;i<np;i++){const t=String.fromCharCode(u[p]);p++;
+      if(t==='Y'){pr.push(dv.getInt16(p,true));p+=2}else if(t==='C'){pr.push(u[p]);p++}else if(t==='I'){pr.push(dv.getInt32(p,true));p+=4}else if(t==='F'){pr.push(dv.getFloat32(p,true));p+=4}else if(t==='D'){pr.push(dv.getFloat64(p,true));p+=8}else if(t==='L'){pr.push(Number(dv.getBigInt64(p,true)));p+=8}
+      else if(t==='S'||t==='R'){const l=dv.getUint32(p,true);p+=4;pr.push(t==='S'?td.decode(u.subarray(p,p+l)):u.slice(p,p+l));p+=l}
+      else if('fdlib'.includes(t)){const n=dv.getUint32(p,true),enc=dv.getUint32(p+4,true),cl=dv.getUint32(p+8,true);p+=12;let raw=u.subarray(p,p+cl);p+=cl;if(enc===1)raw=await mzFbxInflate(raw);
+        const sz={f:4,d:8,l:8,i:4,b:1}[t],ab=raw.byteOffset%sz===0?raw.buffer.slice(raw.byteOffset,raw.byteOffset+n*sz):raw.slice().buffer,v=new DataView(ab);let a;
+        if(t==='f')a=new Float32Array(ab,0,n);else if(t==='d')a=new Float64Array(ab,0,n);else if(t==='i')a=new Int32Array(ab,0,n);else if(t==='b')a=new Uint8Array(ab,0,n);else{a=new Array(n);for(let k=0;k<n;k++)a[k]=Number(v.getBigInt64(k*8,true))}
+        pr.push(a)}else throw new Error('FBX: tipo '+t)}
+    const ch=[];while(p<eo){const c=await rd();if(c)ch.push(c);else if(p>=eo)break}p=eo;return{name,pr,ch}};
+  const root=[];while(p<u.length-nul){const n=await rd();if(!n)break;root.push(n)}return{ver,root}}
+function mzFbxFind(n,name){return(n.ch||n).find?((n.ch||n).find(c=>c.name===name)||null):null}
+async function mzParseFbx(buf){const T=MZ.T,F=await mzFbxRead(buf),R=F.root,get=n=>R.find(x=>x.name===n),obj=get('Objects'),con=get('Connections');
+  if(!obj)throw new Error('FBX sem objetos');
+  const geo={},mdl={},mat={};
+  const props=n=>{const o={},P=n.ch.find(c=>c.name==='Properties70');if(P)P.ch.forEach(q=>{if(q.name==='P'){o[q.pr[0]]=q.pr.slice(4)}});return o};
+  obj.ch.forEach(n=>{const id=n.pr[0],nm=String(n.pr[1]||'').split('\0')[0];if(n.name==='Geometry'&&n.pr[2]==='Mesh')geo[id]=n;else if(n.name==='Model')mdl[id]={n,nm,pr:props(n),kids:[],geos:[],mats:[],g:null};else if(n.name==='Material')mat[id]={nm,pr:props(n)}});
+  const par={};(con?con.ch:[]).forEach(c=>{if(c.name!=='C')return;const ch=c.pr[1],pa=c.pr[2];
+    if(mdl[ch]){if(mdl[pa]){mdl[pa].kids.push(ch);par[ch]=pa}}else if(geo[ch]&&mdl[pa])mdl[pa].geos.push(ch);else if(mat[ch]&&mdl[pa])mdl[pa].mats.push(ch)});
+  const cm={};const mk=id=>{const m=mat[id];if(!m)return new T.MeshStandardMaterial({color:0xcccccc,roughness:.8,side:T.DoubleSide});if(cm[id])return cm[id];
+    const c=m.pr.DiffuseColor||m.pr['Diffuse']||[.8,.8,.8],op=m.pr.Opacity?m.pr.Opacity[0]:1,x=new T.MeshStandardMaterial({color:new T.Color(c[0],c[1],c[2]),roughness:.8,metalness:0,side:T.DoubleSide});if(op<1){x.transparent=true;x.opacity=Math.max(.05,op)}return cm[id]=x};
+  const mesh=(gn,mids)=>{const ch=n=>gn.ch.find(c=>c.name===n),V=ch('Vertices').pr[0],PI=ch('PolygonVertexIndex').pr[0];
+    const ln=ch('LayerElementNormal'),lu=ch('LayerElementUV'),lm=ch('LayerElementMaterial');const sub=(l,n)=>{const c=l&&l.ch.find(x=>x.name===n);return c?c.pr[0]:null};
+    const N=sub(ln,'Normals'),NI=sub(ln,'NormalsIndex'),NM=sub(ln,'MappingInformationType')||'',nmap=ln?ln.ch.find(x=>x.name==='MappingInformationType').pr[0]:'',
+      U=sub(lu,'UV'),UI=sub(lu,'UVIndex'),umap=lu?lu.ch.find(x=>x.name==='MappingInformationType').pr[0]:'',MA=sub(lm,'Materials'),mmap=lm?lm.ch.find(x=>x.name==='MappingInformationType').pr[0]:'';
+    const G={};let poly=[],pn=0,pvi=0;const at=(arr,idx,k,pv,vi,pi)=>0;
+    for(let i=0;i<PI.length;i++){const raw=PI[i],end=raw<0,vi=end?(raw^-1):raw;poly.push([vi,i]);if(end){let mi=0;if(MA)mi=mmap==='AllSame'?MA[0]:MA[Math.min(pn,MA.length-1)]||0;const g=G[mi]||(G[mi]={p:[],n:[],u:[],hn:0,hu:0});
+        for(let k=1;k<poly.length-1;k++)[poly[0],poly[k],poly[k+1]].forEach(q=>{const v=q[0],pv=q[1];g.p.push(V[v*3],V[v*3+1],V[v*3+2]);
+          if(N){let ni=nmap==='ByVertice'||nmap==='ByVertex'?v:nmap==='ByPolygon'?pn:pv;if(NI)ni=NI[ni];g.n.push(N[ni*3],N[ni*3+1],N[ni*3+2]);g.hn=1}else g.n.push(0,0,0);
+          if(U){let ui=umap==='ByVertice'||umap==='ByVertex'?v:pv;if(UI)ui=UI[ui];g.u.push(U[ui*2],U[ui*2+1]);g.hu=1}else g.u.push(0,0)});poly=[];pn++}}
+    const grp=new T.Group();Object.keys(G).forEach(mi=>{const g=G[mi],ge=new T.BufferGeometry();ge.setAttribute('position',new T.Float32BufferAttribute(g.p,3));ge.setAttribute('uv',new T.Float32BufferAttribute(g.u,2));if(g.hn)ge.setAttribute('normal',new T.Float32BufferAttribute(g.n,3));else ge.computeVertexNormals();
+      grp.add(new T.Mesh(ge,mk(mids[+mi]!==undefined?mids[+mi]:mids[0])))});return grp};
+  const build=id=>{const m=mdl[id],g=new T.Group();g.name=m.nm;const tr=m.pr['Lcl Translation'],ro=m.pr['Lcl Rotation'],sc=m.pr['Lcl Scaling'];
+    if(tr)g.position.set(tr[0],tr[1],tr[2]);if(ro)g.rotation.set(ro[0]*Math.PI/180,ro[1]*Math.PI/180,ro[2]*Math.PI/180,'ZYX');if(sc)g.scale.set(sc[0],sc[1],sc[2]);
+    m.geos.forEach(gid=>{try{g.add(mesh(geo[gid],m.mats))}catch(e){}});m.kids.forEach(k=>g.add(build(k)));return g};
+  const top=new T.Group();Object.keys(mdl).forEach(id=>{if(!par[id])top.add(build(+id))});
+  if(!top.children.length){Object.keys(geo).forEach(gid=>{try{top.add(mesh(geo[gid],[]))}catch(e){}})}
+  return top}
+
+})();
+</script>
+<script>
+/* Atualiza a página sozinha quando um novo index.html for publicado. */
+(function(){
+  if(location.protocol==='file:'||!window.fetch)return;
+  var url=location.href.split('#')[0],base=null,mode='head',busy=false,pending=false;
+  function hsh(t){var h=0,st=Math.max(1,Math.floor(t.length/4000));for(var i=0;i<t.length;i+=st)h=(h*31+t.charCodeAt(i))|0;return t.length+':'+h}
+  async function sig(){
+    if(mode==='head'){
+      var r=await fetch(url,{method:'HEAD',cache:'no-store'});
+      var v=[r.headers.get('etag'),r.headers.get('last-modified'),r.headers.get('content-length')].filter(Boolean).join('|');
+      if(v)return v;mode='get';
+    }
+    var g=await fetch(url,{cache:'no-store'});return hsh(await g.text());
+  }
+  function typing(){var a=document.activeElement;return a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.id!=='expr'}
+  async function go(){
+    try{await fetch(url,{cache:'reload'})}catch(e){}
+    setTimeout(function(){location.reload()},900);
+  }
+  async function check(){
+    if(busy)return;busy=true;
+    try{
+      var v=await sig();
+      if(base===null)base=v;
+      else if(v!==base)pending=true;
+      if(pending&&!typing()){pending=false;await go();return}
+    }catch(e){}
+    busy=false;
+  }
+  setTimeout(check,2000);
+  setInterval(function(){if(!document.hidden||pending)check()},mode==='head'?20000:60000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)check()});
+  addEventListener('focus',check);
 })();
 </script>
 
