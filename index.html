@@ -1166,7 +1166,7 @@ const statVal=(c,k)=>num(c.stats&&c.stats[k]);
 /* ---------- bônus automáticos (estilo CRIS) ---------- */
 const FX_TABLE={'reflexosdefensivos':'def+2,fortitude+2,reflexos+2,vontade+2','tanquedeguerra':'def+2','esquiva':'def+3,reflexos+3','mentesa':'vontade+5','corpofechado':'fortitude+5','blindagem':'def+2','sanguedeferro':'fort+5','inquebravel':'def+5','policial':'def+2','desgarrado':'pvnex+1','vitima':'sannex+1'};
 function fxList(c){const o={};(c.ab||[]).forEach(a=>{let t=FX_TABLE[slug(a.n||'')]||'';const m=String(a.d||'').match(/\[auto:([^\]]+)\]/i);if(m)t+=(t?',':'')+m[1];t.split(',').forEach(x=>{const r=x.trim().match(/^([a-z0-9]+)\s*([+-]\s*\d+)$/i);if(r)o[slug(r[1])]=(o[slug(r[1])]||0)+num(r[2].replace(/\s/g,''))});if(!/\[auto:/i.test(a.d||'')&&!FX_TABLE[slug(a.n||'')])fxText(a.d,o)});return o}
-function fxText(d,o){String(d||'').split(/(?<=[.;\n])/).forEach(t=>{if(/contra|quando|enquanto|se estiver/i.test(t))return;let m;
+function fxText(d,o){String(d||'').replace(/([.;\n])/g,'$1\u0001').split('\u0001').forEach(t=>{if(/contra|quando|enquanto|se estiver/i.test(t))return;let m;
  if(m=t.match(/\+(\d+)\s*(?:na|em|de)\s+Defesa/i))o.def=(o.def||0)+num(m[1]);
  if(m=t.match(/deslocamento[^.]*?\+\s*(\d+)\s*m/i))o.desl=(o.desl||0)+num(m[1]);
  if(m=t.match(/\+(\d+)\s*espa[çc]os?\s+(?:de|no)\s+invent[áa]rio/i))o.inv=(o.inv||0)+num(m[1]);
@@ -2638,18 +2638,19 @@ function mzNewGlb(files){const fl=[...files],tot=fl.reduce((a,x)=>a+x.size,0);if
 /* Atualiza a página sozinha quando um novo index.html for publicado (só olha os cabeçalhos; no máximo 1 recarga a cada 3 minutos). */
 (function(){
   if(location.protocol==='file:'||!window.fetch)return;
-  var url=location.href.split('#')[0],base=null,busy=false,pend=0,iv=0;
+  var url=location.href.split('#')[0],base=null,busy=false,pend=0,iv=0;var MOB=false;try{MOB=document.documentElement.dataset.device==='mobile'||/Android|iPhone|iPad|iPod|Discord/i.test(navigator.userAgent)}catch(e){}
+  function banner(){if(document.getElementById('cdmUp'))return;var d=document.createElement('div');d.id='cdmUp';d.textContent='Nova versão disponível — toque para atualizar';d.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2147483000;padding:12px 14px;border-radius:10px;background:#a347ff;color:#fff;font:700 14px -apple-system,Roboto,sans-serif;text-align:center';d.onclick=function(){location.reload()};document.body.appendChild(d)}
   function typing(){var a=document.activeElement;return a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.id!=='expr'}
   function can(){try{return Date.now()-(+sessionStorage.getItem('cdmRl')||0)>180000}catch(e){return false}}
-  async function sig(){var r=await fetch(url,{method:'HEAD',cache:'no-store'});return [r.headers.get('etag'),r.headers.get('last-modified'),r.headers.get('content-length')].filter(Boolean).join('|')}
+  async function sig(){var r=await fetch(url,{method:'HEAD',cache:'no-store'});var e=r.headers.get('etag'),m=r.headers.get('last-modified');return (e||m)?[e,m].filter(Boolean).join('|').replace(/^W\//,'').replace(/-gzip"|-br"/,'"'):''}
   async function check(){
     if(busy||document.hidden)return;busy=true;
     try{var v=await sig();if(!v){clearInterval(iv);return}
-      if(base===null)base=v;else if(v!==base){pend++;if(pend>=2&&can()&&!typing()){try{sessionStorage.setItem('cdmRl',String(Date.now()))}catch(e){}location.reload();return}}else pend=0}
+      if(base===null)base=v;else if(v!==base){pend++;var seen='';try{seen=sessionStorage.getItem('cdmSig')||''}catch(e){}if(pend>=2&&v!==seen){if(MOB){banner();clearInterval(iv);return}if(can()&&!typing()){try{sessionStorage.setItem('cdmRl',String(Date.now()));sessionStorage.setItem('cdmSig',v)}catch(e){}location.reload();return}}}else pend=0}
     catch(e){}
     busy=false;
   }
-  setTimeout(check,15000);iv=setInterval(check,30000);
+  setTimeout(check,MOB?60000:15000);iv=setInterval(check,MOB?120000:30000);
   document.addEventListener('visibilitychange',function(){if(!document.hidden)setTimeout(check,1500)});
 })();
 </script>
