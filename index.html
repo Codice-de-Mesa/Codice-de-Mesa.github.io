@@ -87771,7 +87771,7 @@ function mzNav(){const it=[['age','Agentes','☗'],['tok','Tokens','◎'],['pec'
   document.getElementById('mz').classList.toggle('nc',MZ.navc)}
 function mzLayout(){const p=document.getElementById('mzPanel');if(!p)return;p.style.display=MZ.panel?'flex':'none';mzNav();mzPanel();setTimeout(()=>{mzDraw()},0)}
 function mzStage(){const z=document.getElementById('mzZoom'),ov=document.getElementById('mzOv'),sc=mzScene();if(!z)return;
-  z.innerHTML=sc?'<button data-z="zo">−</button><span>'+(MZ.is3d?'3D':Math.round(MZ.cam.z*100)+'%')+'</span><button data-z="zi">+</button><button class="t" data-z="fit" title="Ajustar à tela">AJUSTAR</button><button class="t'+(MZ.snap?' on':'')+'" data-z="snap" title="Encaixar tokens na grade">ENCAIXAR</button><button class="t'+(MZ.is3d?' on':'')+'" data-z="m3" title="Alternar entre 2D e 3D">'+(MZ.is3d?'2D':'3D')+'</button>'+(MZ.is3d?'<button class="t" data-z="rl" title="Girar">↺</button><button class="t" data-z="rr" title="Girar">↻</button><button class="t" data-z="tu" title="Inclinar">▲</button><button class="t" data-z="td" title="Inclinar">▼</button> <button class="t'+(mz3.pan?' on':'')+'" data-z="t3p" title="Editar terreno 3D: relevo, caminho, árvores">TERRENO</button><button class="t'+(mz3.rel?' on':'')+'" data-z="rel" title="Relevo 3D do mapa: desligado / suave / normal / alto">RELEVO '+['OFF','1','2','3'][mz3.rel]+'</button>':''):'';
+  z.innerHTML=sc?'<button data-z="zo">−</button><span>'+(MZ.is3d?'3D':Math.round(MZ.cam.z*100)+'%')+'</span><button data-z="zi">+</button><button class="t" data-z="fit" title="Ajustar à tela">AJUSTAR</button><button class="t'+(MZ.snap?' on':'')+'" data-z="snap" title="Encaixar tokens na grade">ENCAIXAR</button><button class="t'+(MZ.is3d?' on':'')+'" data-z="m3" title="Alternar entre 2D e 3D">'+(MZ.is3d?'2D':'3D')+'</button>'+(MZ.is3d?'<button class="t" data-z="rl" title="Girar">↺</button><button class="t" data-z="rr" title="Girar">↻</button><button class="t" data-z="tu" title="Inclinar">▲</button><button class="t" data-z="td" title="Inclinar">▼</button><button class="t'+(mz3.free?' on':'')+'" data-z="fl" title="Câmera livre: olhar para qualquer lado (botão direito ou Alt arrasta para olhar; W A S D andam; Q E descem e sobem)">LIVRE</button> <button class="t'+(mz3.pan?' on':'')+'" data-z="t3p" title="Editar terreno 3D: relevo, caminho, árvores">TERRENO</button><button class="t'+(mz3.rel?' on':'')+'" data-z="rel" title="Relevo 3D do mapa: desligado / suave / normal / alto">RELEVO '+['OFF','1','2','3'][mz3.rel]+'</button>':''):'';
   let h='';if(!sc){if(MZ.gm)h=mzForm(true);else h='<div class="center"><div class="box"><h1>Aguardando o mestre</h1><p>Nenhuma cena foi exibida para os jogadores ainda.</p></div></div>'}else if(MZ.form&&MZ.form.first)h=mzForm(true);ov.innerHTML=h;mzTplThumbs()}
 function mzForm(first){const f=MZ.form||(MZ.form={k:'scene',name:'',img:null});return '<div class="center"><div class="box"><h1>Mesa Virtual</h1><p style="margin:6px 0 28px;opacity:.85">Para começar, você vai precisar criar uma cena.</p><label class="fl">Nome da Cena</label><input class="full" data-f="name" value="'+esc(f.name)+'" placeholder="Ex: Taverna do Javali"><label class="fl">Imagem do mapa</label><label class="drop">'+(f.img?'<img alt="" src="'+f.img+'">':'Clique para selecionar o arquivo')+'<input type="file" accept="image/*" data-file="scene" hidden></label>'+mzCropUI(f)+'<div class="row"><label class="bt full" style="flex:1;text-align:center;cursor:pointer">Escolher outra imagem<input type="file" accept="image/*" data-file="scene" hidden></label><button class="bt p" style="flex:1" data-z="mkscene">Confirmar</button>'+(MZ.M.scenes.length?'<button class="bt" data-z="cancelform">Cancelar</button>':'')+'</div>'+mzTplGallery()+'</div></div>'}
 function mzCard(a){const s=a.s||{},hide=s.pr&&!MZ.gm&&a.owner!==mzUid(),bars=hide?{}:(s.bars||{}),at=hide?[]:(s.at||[]);
@@ -87786,7 +87786,7 @@ function mzPanel(){const el=document.getElementById('mzPanel');if(!el)return;el.
     if(MZ.gm){h+='<h3>Biblioteca</h3>'+(M.lib.length?M.lib.map(x=>'<div class="tr" style="cursor:default"><div class="th" style="border-color:'+esc(x.col)+';background:'+esc(x.col)+'">'+(mzTImg(x)?'<img alt="" src="'+esc(mzTImg(x))+'">':esc(kIni(x.name)))+'</div><div class="nm">'+esc(x.name)+' <small style="color:#9a9aa6">'+x.sz+'×</small></div><button class="bt sm" data-z="libadd" data-v="'+x.id+'">Usar</button><button class="bt d sm" data-z="libdel" data-v="'+x.id+'">✕</button></div>').join(''):'<p style="color:#9a9aa6;font-style:italic;text-align:center;margin:14px 0">Você ainda não criou nenhum token</p>')+
       (MZ.form&&MZ.form.k==='token'?mzTokForm():'<button class="bt p full" style="margin-top:18px" data-z="newtok">Criar novo token</button>')}}
   else if(P==='pec'){const D=PEC(),cats=[];D.forEach(p=>{if(!cats.includes(p.cat))cats.push(p.cat)});
-    h+='<p style="color:#9a9aa6;font-size:.82rem;margin:4px 0 12px">Modelos padrão já com as cores dos materiais do Blender (telhado, madeira, pedra…). Toque em <b>Adicionar</b>, depois use o botão 3D e arraste a peça para montar o mapa. Gire pelo campo Rotação do token (aba Tokens). Seus próprios .blend (2.7x–2.9x), .glb, .gltf, .obj ou .fbx (até 400 MB) entram aqui ou em Tokens › Modelo 3D.</p><label class="bt p full" style="cursor:pointer;text-align:center;margin-bottom:10px">Importar modelo 3D (construção ou personagem)<input type="file" multiple accept=".blend,.glb,.gltf,.obj,.fbx,.mtl,.bin,.png,.jpg,.jpeg,.webp" data-file="newglb" hidden></label>';
+    h+='<p style="color:#9a9aa6;font-size:.82rem;margin:4px 0 12px">Modelos padrão já com as cores dos materiais do Blender (telhado, madeira, pedra…). Toque em <b>Adicionar</b>, depois use o botão 3D e arraste a peça para montar o mapa. Gire pelo campo Rotação do token (aba Tokens). Seus próprios .blend (2.7x–2.9x), .glb, .gltf, .obj ou .fbx (até 400 MB) entram aqui ou em Tokens › Modelo 3D.</p><label class="bt p full" style="cursor:pointer;text-align:center;margin-bottom:10px">Importar modelo 3D (construção ou personagem)<input type="file" multiple accept=".blend,.glb,.gltf,.obj,.fbx,.stl,.ply,.mtl,.bin,.png,.jpg,.jpeg,.webp" data-file="newglb" hidden></label>';h+=mzSlibHtml();
     cats.forEach(c=>{h+='<h3>'+esc(c)+'</h3>'+D.filter(p=>p.cat===c).map(p=>'<div class="tr" style="cursor:default"><div class="th" style="border-color:'+p.col+';background:'+p.col+'">⌂</div><div class="nm">'+esc(p.n)+' <small style="color:#9a9aa6">'+p.sz+'×</small><div style="display:flex;gap:3px;margin-top:5px">'+p.sw.map(c2=>'<i style="width:12px;height:12px;border-radius:3px;background:'+c2+';border:1px solid #555"></i>').join('')+'</div></div><button class="bt sm" data-z="pecadd" data-v="'+p.id+'">Adicionar</button><button class="bt sm" data-z="pecdl" data-v="'+p.id+'" title="Baixar .glb (abre no Blender: Arquivo › Importar › glTF)">⬇</button></div>').join('')})}
   else if(P==='esc'){h+='<div style="margin-top:20px">'+(mzAgents().map(mzCard).join('')||'<p style="color:#9a9aa6">Nenhum agente.</p>')+'</div>'}
   else if(P==='cen'){const e=MZ.edit&&M.scenes.find(s=>s.id===MZ.edit);
@@ -87804,7 +87804,7 @@ function mzClick(e){const t=e.target.closest('[data-z]');if(!t)return;const a=t.
   if(a==='m3'){mz3Toggle();return}
   if(MZ.is3d&&a==='rel'){mz3Rel();return}
   if(MZ.is3d&&a==='t3p'){if(mz3.pan)mz3PanelClose();else mz3Panel();mzStage();return}
-  if(MZ.is3d&&(a==='zi'||a==='zo'||a==='fit'||a==='rl'||a==='rr'||a==='tu'||a==='td')){mz3Ctl(a);return}
+  if(MZ.is3d&&(a==='zi'||a==='zo'||a==='fit'||a==='rl'||a==='rr'||a==='tu'||a==='td'||a==='fl')){mz3Ctl(a);return}
   if(a==='rmglb'){const tk=mzTok(MZ.sel);if(tk&&mzCan(tk)){delete tk.glb;delete tk.glbn;mzOwnSend(tk,'glb');mzCommit()}return}
   if(a==='cropscene'){const f=MZ.form;if(f&&f.img)mzCropModal(f.img,{title:'Recortar o mapa',def:'full',max:1600},(u,w,h)=>{f.img=u;f.w=w;f.h=h;f.crop=null;mzStage()});return}
   if(a==='croptok'){const tk=mzTok(MZ.sel);if(tk&&mzCan(tk)&&mzTImg(tk))mzCropModal(mzTImg(tk),{title:'Recortar a foto do token',def:'full',max:320,png:1},u=>{const t2=mzTok(tk.id);if(t2)mzSetImg(t2,u)});return}
@@ -87821,7 +87821,7 @@ function mzClick(e){const t=e.target.closest('[data-z]');if(!t)return;const a=t.
   else if(a==='newscene'){MZ.form={k:'scene',name:'',img:null,first:1};mzStage()}
   else if(a==='newtok'){MZ.form={k:'token',name:'',img:'',sz:1,col:mzCols[M.lib.length%mzCols.length]};mzPanel()}
   else if(a==='mktok'){const f=MZ.form;if(!f)return;const o={name:f.name||'Token',img:f.img||'',sz:+f.sz||1,col:f.col};M.lib.push(Object.assign({id:mzId()},o));mzAddTok(o);MZ.form=null;mzCommit()}
-  else if(a==='pecadd'){mzPecAdd(v)}else if(a==='pecdl'){mzPecDl(v)}else if(a==='libadd'){const x=M.lib.find(q=>q.id===v);if(x){mzAddTok({name:x.name,img:x.img,sz:x.sz,col:x.col});mzCommit()}}
+  else if(a==='slibadd'){mzSlibUse(v)}else if(a==='slibdel'){M.slib=(M.slib||[]).filter(q=>q.id!==v);mzSave();mzPanel()}else if(a==='pecadd'){mzPecAdd(v)}else if(a==='pecdl'){mzPecDl(v)}else if(a==='libadd'){const x=M.lib.find(q=>q.id===v);if(x){mzAddTok({name:x.name,img:x.img,sz:x.sz,col:x.col});mzCommit()}}
   else if(a==='libdel'){M.lib=M.lib.filter(q=>q.id!==v);mzSave();mzPanel()}
   else if(a==='seltok'){MZ.sel=v;const tk=mzTok(v);if(tk&&MZ.cv){MZ.cam.x=MZ.cv.clientWidth/2-tk.x*MZ.cam.z;MZ.cam.y=MZ.cv.clientHeight/2-tk.y*MZ.cam.z}mzAll()}
   else if(a==='deltok'){mzDelTok(v)}
@@ -87837,6 +87837,7 @@ function mzClick(e){const t=e.target.closest('[data-z]');if(!t)return;const a=t.
   else if(a==='qd'){mzRoll('1d'+v)}
   else if(a==='rollx'){const i=document.querySelector('#mz [data-rx]');if(i){MZ.rx=i.value;mzRoll(i.value||'1d20')}}}
 function mzChange(e){const t=e.target,M=MZ.M;
+  if(t.dataset.sl){const x=(M.slib||[]).find(q=>q.id===t.dataset.sl);if(x){x.sz=Math.max(.5,Math.min(12,+t.value||3));mzSave()}return}
   if(t.dataset.file){const k=t.dataset.file,f=t.files&&t.files[0];if(!f)return;
     if(k==='scene')mzReadFull(f,1600,(u0)=>mzCropModal(u0,{title:'Recortar o mapa',def:'full',skip:1,max:1600},(u,w,h)=>{MZ.form=MZ.form||{k:'scene'};MZ.form.img=u;MZ.form.crop=null;MZ.form.w=w;MZ.form.h=h;if(!MZ.form.name)MZ.form.name=f.name.replace(/\.[^.]+$/,'');mzStage()}),1);
     else if(k==='newtok')mzReadFull(f,1024,u0=>mzCropModal(u0,{title:'Recortar a foto do token',def:'full',max:320,png:1},u=>{if(MZ.form){MZ.form.img=u;mzPanel()}}));
@@ -87859,7 +87860,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.d
 
 
 /* ================= MESA 3D (three.js embutido) ================= */
-const mz3={on:0,r:null,s:null,cam:null,L:null,ob:{},mix:[],raf:0,pl:null,base:null,grid:null,sig:'',gsig:'',vsc:null,yaw:0,pit:1,dist:18,tx:0,tz:0,W:1,H:1,rc:null,cl:null,rel:2,hm:null};
+const mz3={on:0,r:null,s:null,cam:null,L:null,ob:{},mix:[],raf:0,pl:null,base:null,grid:null,sig:'',gsig:'',vsc:null,yaw:0,pit:1,dist:18,tx:0,tz:0,W:1,H:1,rc:null,cl:null,rel:2,hm:null,ty:0,free:0,kd:{},kb:0};
 const mzTImg=t=>t.img||MZ.timg[t.id]||'';
 const mz3Blob=t=>URL.createObjectURL(new Blob([t],{type:'text/javascript'}));
 async function mz3Lib(){if(MZ.T)return MZ.T;const g=id=>document.getElementById(id).textContent;
@@ -87945,8 +87946,29 @@ document.addEventListener('input',e=>{const t=e.target,d=t&&t.dataset;if(!d)retu
     const lb=document.querySelector('[data-cv="'+k+'"]');if(lb)lb.textContent=c[k]+'%';
     const inf=document.getElementById('mzCropInfo');if(inf)inf.textContent='Resultado: '+Math.round(f.w*(100-c.l-c.r)/100)+' × '+Math.round(f.h*(100-c.t-c.b)/100)+' px'}});
 
-function mz3Fit(){mz3.yaw=0;mz3.pit=1;mz3.tx=0;mz3.tz=0;mz3.dist=Math.max(mz3.W*.75,mz3.H*.95)+5}
-function mz3Ctl(a){if(a==='zi')mz3.dist=Math.max(3,mz3.dist/1.2);else if(a==='zo')mz3.dist=Math.min(150,mz3.dist*1.2);else if(a==='fit')mz3Fit();else if(a==='rl')mz3.yaw-=.4;else if(a==='rr')mz3.yaw+=.4;else if(a==='tu')mz3.pit=Math.min(1.5,mz3.pit+.15);else if(a==='td')mz3.pit=Math.max(.2,mz3.pit-.15)}
+function mz3Fit(){mz3.yaw=0;mz3.pit=1;mz3.tx=0;mz3.tz=0;mz3.ty=0;mz3.free=0;mz3.dist=Math.max(mz3.W*.75,mz3.H*.95)+5}
+/* ---- câmera livre: olhar para qualquer lado ---- */
+function mz3Cpos(){const p=mz3.pit,cp=Math.cos(p);return{x:mz3.tx+mz3.dist*cp*Math.sin(mz3.yaw),y:mz3.ty+mz3.dist*Math.sin(p),z:mz3.tz+mz3.dist*cp*Math.cos(mz3.yaw)}}
+function mz3Look(dyaw,dpit){const C=mz3Cpos();mz3.yaw+=dyaw;mz3.pit=Math.max(-1.55,Math.min(1.55,mz3.pit+dpit));const p=mz3.pit,cp=Math.cos(p);mz3.tx=C.x-mz3.dist*cp*Math.sin(mz3.yaw);mz3.ty=C.y-mz3.dist*Math.sin(p);mz3.tz=C.z-mz3.dist*cp*Math.cos(mz3.yaw)}
+function mz3Move(fw,rt,up,flat){const sy=Math.sin(mz3.yaw),cy=Math.cos(mz3.yaw),cp=flat?1:Math.cos(mz3.pit),sp=flat?0:Math.sin(mz3.pit);
+  mz3.tx+=-cp*sy*fw+cy*rt;mz3.ty+=-sp*fw+up;mz3.tz+=-cp*cy*fw-sy*rt}
+function mz3Free(on){on=!!on;if(on===!!mz3.free)return;
+  if(on){mz3.free=1;note('Câmera livre: arraste com o botão direito (ou Alt) para olhar; W A S D andam, Q/E descem e sobem, setas viram. + e − avançam e recuam.')}
+  else{const C=mz3Cpos();if(mz3.pit<.12)mz3.pit=.35;const q=mz3.pit,cq=Math.cos(q),d=Math.max(1,Math.min(150,Math.max(.3,C.y)/Math.sin(q)));
+    mz3.dist=d;mz3.tx=C.x-d*cq*Math.sin(mz3.yaw);mz3.tz=C.z-d*cq*Math.cos(mz3.yaw);mz3.ty=0;mz3.free=0}
+  mzStage()}
+function mz3Keys(dt){if(!mz3.free)return;const k=mz3.kd;if(!Object.keys(k).length)return;const v=(k.shift?18:6)*dt,r=1.7*dt;
+  const fw=(k.w?1:0)-(k.s?1:0),rt=(k.d?1:0)-(k.a?1:0),up=(k.e?1:0)-(k.q?1:0);if(fw||rt||up)mz3Move(fw*v,rt*v,up*v,true);
+  const ry=(k.arrowleft?1:0)-(k.arrowright?1:0),rp=(k.arrowdown?1:0)-(k.arrowup?1:0);if(ry||rp)mz3Look(ry*r,rp*r)}
+function mz3Ctl(a){const f=mz3.free;
+  if(a==='zi'){if(f)mz3Move(Math.max(1.5,mz3.dist*.15),0,0);else mz3.dist=Math.max(1,mz3.dist/1.2)}
+  else if(a==='zo'){if(f)mz3Move(-Math.max(1.5,mz3.dist*.15),0,0);else mz3.dist=Math.min(150,mz3.dist*1.2)}
+  else if(a==='fit')mz3Fit();
+  else if(a==='fl')mz3Free(!f);
+  else if(a==='rl'){if(f)mz3Look(.4,0);else mz3.yaw-=.4}
+  else if(a==='rr'){if(f)mz3Look(-.4,0);else mz3.yaw+=.4}
+  else if(a==='tu'){if(f)mz3Look(0,-.15);else mz3.pit=Math.min(1.55,mz3.pit+.15)}
+  else if(a==='td'){if(f)mz3Look(0,.15);else mz3.pit=Math.max(.03,mz3.pit-.15)}}
 async function mz3Toggle(){const c2=document.getElementById('mzCv'),c3=document.getElementById('mzCv3');
   if(MZ.is3d){mz3PanelClose();MZ.is3d=false;mz3.on=0;cancelAnimationFrame(mz3.raf);c3.style.display='none';c2.style.display='block';mzStage();mzDraw();return}
   const ok=await mz3Start();if(!ok)return;MZ.is3d=true;mz3.on=1;mz3.vsc=null;mz3.sig='';c2.style.display='none';c3.style.display='block';c3.dataset.w='';mzStage();cancelAnimationFrame(mz3.raf);mz3Loop()}
@@ -87997,24 +88019,31 @@ function mz3Sync(){const T=MZ.T,sc=mzScene(),S=mz3.s;if(!sc){Object.keys(mz3.ob)
 function mz3Loop(){if(!mz3.on||!mz3.r)return;mz3.raf=requestAnimationFrame(mz3Loop);const cv=document.getElementById('mzCv3');if(!cv)return;const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;
   if(cv.dataset.w!==w+'x'+h){mz3.r.setSize(w,h,false);mz3.cam.aspect=w/h;mz3.cam.updateProjectionMatrix();cv.dataset.w=w+'x'+h}
   const dt=mz3.cl.getDelta();mz3.mix.forEach(m=>m.update(dt));mz3Sync();
-  const p=mz3.pit,cp=Math.cos(p);mz3.cam.position.set(mz3.tx+mz3.dist*cp*Math.sin(mz3.yaw),mz3.dist*Math.sin(p),mz3.tz+mz3.dist*cp*Math.cos(mz3.yaw));mz3.cam.lookAt(mz3.tx,0,mz3.tz);
+  mz3Keys(dt);const p=mz3.pit,cp=Math.cos(p);let ty=mz3.free?mz3.ty:0,cx=mz3.tx+mz3.dist*cp*Math.sin(mz3.yaw),cz=mz3.tz+mz3.dist*cp*Math.cos(mz3.yaw),cy=ty+mz3.dist*Math.sin(p);
+  const fl=mz3H(cx,cz)+.35;if(cy<fl){ty+=fl-cy;cy=fl;if(mz3.free)mz3.ty=ty}
+  mz3.cam.position.set(cx,cy,cz);mz3.cam.lookAt(mz3.tx,ty,mz3.tz);
   Object.keys(mz3.ob).forEach(id=>{const o=mz3.ob[id];if(o.bb)o.bb.rotation.y=Math.atan2(mz3.cam.position.x-o.g.position.x,mz3.cam.position.z-o.g.position.z)});
   mz3.r.render(mz3.s,mz3.cam)}
 function mz3Ndc(e){const cv=document.getElementById('mzCv3'),r=cv.getBoundingClientRect();return new MZ.T.Vector2(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1)}
 function mz3Pick(e){mz3.rc.setFromCamera(mz3Ndc(e),mz3.cam);const hit=mz3.rc.intersectObjects(Object.values(mz3.ob).map(o=>o.g),true);for(const h of hit){let n=h.object;while(n&&!(n.userData&&n.userData.tid))n=n.parent;if(n){const t=mzTok(n.userData.tid);if(t&&(MZ.gm||!t.hid))return t}}return null}
 function mz3Ground(e){mz3.rc.setFromCamera(mz3Ndc(e),mz3.cam);const T=MZ.T,pt=new T.Vector3();return mz3.rc.ray.intersectPlane(new T.Plane(new T.Vector3(0,1,0),0),pt)?pt:null}
 function mz3Bind(cv){cv.addEventListener('contextmenu',e=>e.preventDefault());
-  cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);const sc=mzScene();if(!sc)return;const t=(e.button===2||e.shiftKey)?null:mz3Pick(e);
+  cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);const sc=mzScene();if(!sc)return;const t=(e.button===2||e.button===1||e.shiftKey||e.altKey)?null:mz3Pick(e);
     if(t){MZ.sel=t.id;MZ.d3=null;if(mzCan(t)){const gp=mz3Ground(e);MZ.d3={k:'tok',id:t.id,dx:gp?t.x-(gp.x+mz3.W/2)*sc.cell:0,dy:gp?t.y-(gp.z+mz3.H/2)*sc.cell:0,moved:false,l:0}}if(!MZ.panel||MZ.panel==='tok'){MZ.panel='tok'}mzAll();mzNav()}
-    else{if(MZ.sel){MZ.sel=null;mzAll()}MZ.d3={k:(e.button===2||e.shiftKey)?'orb':'pan',sx:e.clientX,sy:e.clientY}}});
+    else{if(MZ.sel){MZ.sel=null;mzAll()}MZ.d3={k:(e.button===1||e.altKey||(mz3.free&&(e.button===2||e.shiftKey)))?'look':(e.button===2||e.shiftKey)?'orb':'pan',sx:e.clientX,sy:e.clientY}}});
   cv.addEventListener('pointermove',e=>{const d=MZ.d3;if(!d)return;const sc=mzScene();
     if(d.k==='tok'){const t=mzTok(d.id),gp=mz3Ground(e);if(!t||!gp||!sc)return;t.x=(gp.x+mz3.W/2)*sc.cell+d.dx;t.y=(gp.z+mz3.H/2)*sc.cell+d.dy;d.moved=true;const n=Date.now();if(n-d.l>70){d.l=n;mzSend({t:'mv',id:t.id,x:t.x,y:t.y,u:mzUid()})}}
     else{const dx=e.clientX-d.sx,dy=e.clientY-d.sy;d.sx=e.clientX;d.sy=e.clientY;
-      if(d.k==='orb'){mz3.yaw-=dx*.006;mz3.pit=Math.max(.2,Math.min(1.5,mz3.pit+dy*.005))}
+      if(d.k==='look'){if(!mz3.free)mz3Free(1);mz3Look(-dx*.005,dy*.005)}
+      else if(d.k==='orb'){mz3.yaw-=dx*.006;mz3.pit=Math.max(.03,Math.min(1.55,mz3.pit+dy*.005))}
       else{const k=mz3.dist*.0016,sy=Math.sin(mz3.yaw),cy=Math.cos(mz3.yaw);mz3.tx-=cy*dx*k;mz3.tz+=sy*dx*k;mz3.tx+=-sy*dy*k;mz3.tz+=-cy*dy*k}}});
   const up=()=>{const d=MZ.d3;MZ.d3=null;if(d&&d.k==='tok'&&d.moved){const t=mzTok(d.id),sc=mzScene();if(t&&sc){mzSnap(t,sc);mzSend({t:'mv',id:t.id,x:t.x,y:t.y,u:mzUid()});mzSave()}}};
   cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
-  cv.addEventListener('wheel',e=>{e.preventDefault();mz3.dist=Math.max(3,Math.min(150,mz3.dist*Math.exp(e.deltaY*.001)))},{passive:false})}
+  cv.addEventListener('wheel',e=>{e.preventDefault();if(mz3.free)mz3Move(-Math.sign(e.deltaY)*Math.max(.6,mz3.dist*.1),0,0);else mz3.dist=Math.max(1,Math.min(150,mz3.dist*Math.exp(e.deltaY*.001)))},{passive:false});
+  cv.addEventListener('mousedown',e=>{if(e.button===1)e.preventDefault()});
+  if(!mz3.kb){mz3.kb=1;const typing=e=>{const t=e.target,n=t&&t.tagName;return n==='INPUT'||n==='TEXTAREA'||n==='SELECT'||(t&&t.isContentEditable)};
+    document.addEventListener('keydown',e=>{if(!MZ.is3d||!mz3.free||typing(e)||e.ctrlKey||e.metaKey)return;const k=e.key.toLowerCase();if('wasdqe'.indexOf(k)>=0&&k.length===1||k.indexOf('arrow')===0||k==='shift'){mz3.kd[k]=1;if(k.indexOf('arrow')===0)e.preventDefault()}});
+    document.addEventListener('keyup',e=>{delete mz3.kd[e.key.toLowerCase()]});window.addEventListener('blur',()=>{mz3.kd={}})}}
 
 /* ---- envio em pedaços (limite de mensagem do Realtime) ---- */
 function mzQ(p){MZ.q.push(p);if(!MZ.qt)MZ.qt=setInterval(()=>{const x=MZ.q.shift();if(!x){clearInterval(MZ.qt);MZ.qt=0;return}mzSend(x)},120)}
@@ -88147,9 +88176,9 @@ async function mzPecAdd(id){const p=PEC().find(x=>x.id===id);if(!p)return;if(!mz
   mzAddTok({name:p.n,sz:p.sz,col:p.col,glb:gid,glbn:id+'.glb',rot:0});mzCommit();note(MZ.is3d?p.n+' adicionada.':p.n+' adicionada. Clique em 3D para ver.')}
 async function mzPecDl(id){const p=PEC().find(x=>x.id===id);if(!p)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([await mzPecBuf(p)],{type:'model/gltf-binary'}));a.download=id+'.glb';document.body.appendChild(a);a.click();a.remove()}
 
-const MZ_MEXT=/\.(glb|gltf|obj|fbx|blend)$/i,MZ_AUX=/\.(mtl|bin|png|jpe?g|webp|gif|bmp|tga)$/i;
+const MZ_MEXT=/\.(glb|gltf|obj|fbx|stl|ply|blend)$/i,MZ_AUX=/\.(mtl|bin|png|jpe?g|webp|gif|bmp|tga)$/i;
 function mzPack0(files){return Promise.all(files.map(f=>f.arrayBuffer().then(b=>({n:f.name,b:b})))).then(L=>{
-  const order=['glb','gltf','obj','fbx'];let main=null;for(const e of order){main=L.find(x=>x.n.toLowerCase().endsWith('.'+e));if(main)break}
+  const order=['glb','gltf','obj','fbx','stl','ply'];let main=null;for(const e of order){main=L.find(x=>x.n.toLowerCase().endsWith('.'+e));if(main)break}
   if(!main)throw new Error('nomain');
   const keep=L.filter(x=>x===main||(main.n.toLowerCase().endsWith('.glb')?false:true));
   const head=new TextEncoder().encode(JSON.stringify({main:main.n,files:keep.map(x=>[x.n,x.b.byteLength])})),tot=8+head.length+keep.reduce((s,x)=>s+x.b.byteLength,0),out=new Uint8Array(tot),dv=new DataView(out.buffer);
@@ -88181,6 +88210,7 @@ function mzLoadModel(buf,cb0,er){const cb=(a,b)=>setTimeout(()=>cb0(a,b),0);let 
   try{
     if(ext==='obj'){let mt={};Object.keys(P.files).forEach(n=>{if(/\.mtl$/i.test(n))Object.assign(mt,mzParseMtl(dec(P.files[n]),tex))});
       const g=mzParseObj(dec(P.files[P.main]),mt,tex);cb(g,[]);return}
+    if(ext==='stl'||ext==='ply'){cb(ext==='stl'?mzParseStl(P.files[P.main]):mzParsePly(P.files[P.main]),[]);return}
     if(ext==='fbx'){mzParseFbx(P.files[P.main]).then(o=>cb(o,[])).catch(er);return}
     const urls=[],mgr=new T.LoadingManager();mgr.setURLModifier(u=>{const b=mzBase(u);if(tex[b]&&b!==mzBase(P.main)){const x=URL.createObjectURL(new Blob([tex[b]],{type:mzMimeOf(b)}));urls.push(x);return x}return u});
     const ld=new T.GLTFLoader(mgr),data=ext==='glb'?P.files[P.main]:dec(P.files[P.main]);
@@ -88268,7 +88298,7 @@ function mzTokDims(t,sc){const S=Math.max(4,t.sz*sc.cell),im=mzEl(mzTImg(t),'t'+
 const MZ_BIG=25*1048576,MZ_MAXM=400*1048576;
 function mzOwnTools(t){const ex=PEC().find(p=>p.ex);
   return '<div class="row"><label class="bt sm" style="cursor:pointer">Trocar foto<input type="file" accept="image/*" data-file="tokimg" hidden></label>'+(mzTImg(t)?'<button class="bt sm" data-z="croptok">✂ Recortar foto</button>':'')+'</div>'+
-  '<div class="row"><label class="bt sm" style="cursor:pointer">Modelo 3D (blend, glb, gltf, obj, fbx)<input type="file" multiple accept=".blend,.glb,.gltf,.obj,.fbx,.mtl,.bin,.png,.jpg,.jpeg,.webp" data-file="glb" hidden></label>'+(ex?'<button class="bt sm" data-z="exglb" data-v="'+ex.id+'">Usar exemplo</button>':'')+(t.glb?'<small style="color:#9a9aa6">'+esc(t.glbn||'modelo')+'</small><button class="bt d sm" data-z="rmglb">Tirar modelo</button>':'')+'</div>'+
+  '<div class="row"><label class="bt sm" style="cursor:pointer">Modelo 3D (blend, glb, gltf, obj, fbx)<input type="file" multiple accept=".blend,.glb,.gltf,.obj,.fbx,.stl,.ply,.mtl,.bin,.png,.jpg,.jpeg,.webp" data-file="glb" hidden></label>'+(ex?'<button class="bt sm" data-z="exglb" data-v="'+ex.id+'">Usar exemplo</button>':'')+(t.glb?'<small style="color:#9a9aa6">'+esc(t.glbn||'modelo')+'</small><button class="bt d sm" data-z="rmglb">Tirar modelo</button>':'')+'</div>'+
   '<small style="color:#9a9aa6;display:block">Modelo 3D até 400 MB. Acima de 25 MB só quem carregou o arquivo vê o 3D; os outros veem a foto.</small>'}
 function mzOwnSend(t,kind){if(MZ.gm||MZ.local)return;const u=mzUid();
   if(kind==='img'){const im=mzTImg(t);if(im){mzChunks('timg',t.id,im,150000,{up:1,u:u});mzSend({t:'tup',id:t.id,u:u})}}
@@ -88277,8 +88307,36 @@ function mzOwnSend(t,kind){if(MZ.gm||MZ.local)return;const u=mzUid();
 function mzSetImg(t,u){t.img=u;MZ.timg[t.id]=u;mzOwnSend(t,'img');mzCommit()}
 function mzSetModel(t,buf,name,gid){gid=gid||mzId();MZ.glbs[gid]=buf;if(!/^pec_/.test(gid))mzSet('g_'+MZ.cid+'_'+gid,buf);t.glb=gid;t.glbn=name;mzOwnSend(t,'glb');mzCommit();note(buf.byteLength>MZ_BIG&&!/^pec_/.test(gid)?'Modelo carregado. Ele é grande: os outros jogadores verão a foto do token.':(MZ.is3d?'Modelo carregado.':'Modelo carregado. Clique em 3D para ver.'))}
 async function mzUseExample(t,id){const p=PEC().find(x=>x.id===id);if(!p||!t)return;const gid='pec_'+id;if(!MZ.glbs[gid]){try{MZ.glbs[gid]=await mzPecBuf(p)}catch(e){note('Seu navegador não conseguiu abrir o modelo de exemplo.');return}}mzSetModel(t,MZ.glbs[gid],id+'.glb',gid)}
+/* ---- STL e PLY (malhas de impressão 3D e scanners) ---- */
+function mzMeshOf(T,pos,col,rotX){const ge=new T.BufferGeometry();ge.setAttribute('position',new T.Float32BufferAttribute(pos,3));if(col)ge.setAttribute('color',new T.Float32BufferAttribute(col,3));if(rotX)ge.rotateX(-Math.PI/2);ge.computeVertexNormals();
+  const m=new T.Mesh(ge,new T.MeshStandardMaterial({color:col?0xffffff:0xb9b9c4,vertexColors:!!col,roughness:.7,metalness:.05,side:T.DoubleSide})),g=new T.Group();g.add(m);return g}
+function mzParseStl(buf){const T=MZ.T,dv=new DataView(buf),n=buf.byteLength>=84?dv.getUint32(80,true):0,pos=[];
+  if(buf.byteLength===84+n*50){for(let i=0;i<n;i++){const o=84+i*50+12;for(let v=0;v<3;v++)pos.push(dv.getFloat32(o+v*12,true),dv.getFloat32(o+v*12+4,true),dv.getFloat32(o+v*12+8,true))}}
+  else{const tx=new TextDecoder().decode(buf),re=/vertex\s+(\S+)\s+(\S+)\s+(\S+)/g;let m;while((m=re.exec(tx)))pos.push(+m[1],+m[2],+m[3])}
+  if(!pos.length)throw new Error('STL vazio ou inválido.');return mzMeshOf(T,pos,null,true)}
+function mzParsePly(buf){const T=MZ.T,u=new Uint8Array(buf);let he=-1;const hd=new TextDecoder().decode(u.subarray(0,Math.min(u.length,16384)));const ix=hd.indexOf('end_header');if(ix<0)throw new Error('PLY inválido.');
+  let bs=ix+10;while(u[bs]!==10&&bs<u.length)bs++;bs++;const lines=hd.slice(0,ix).split(/\r?\n/),fmt=(lines.find(l=>/^format/.test(l))||'').split(/\s+/)[1]||'ascii',els=[];
+  lines.forEach(l=>{const p=l.trim().split(/\s+/);if(p[0]==='element')els.push({n:p[1],c:+p[2],p:[]});else if(p[0]==='property'&&els.length){if(p[1]==='list')els[els.length-1].p.push({list:1,ct:p[2],t:p[3],n:p[4]});else els[els.length-1].p.push({t:p[1],n:p[2]})}});
+  const SZ={char:1,int8:1,uchar:1,uint8:1,short:2,int16:2,ushort:2,uint16:2,int:4,int32:4,uint:4,uint32:4,float:4,float32:4,double:8,float64:8},le=fmt!=='binary_big_endian',dv=new DataView(buf);
+  const rd=(t,o)=>{switch(t){case'char':case'int8':return dv.getInt8(o);case'uchar':case'uint8':return dv.getUint8(o);case'short':case'int16':return dv.getInt16(o,le);case'ushort':case'uint16':return dv.getUint16(o,le);case'int':case'int32':return dv.getInt32(o,le);case'uint':case'uint32':return dv.getUint32(o,le);case'float':case'float32':return dv.getFloat32(o,le);default:return dv.getFloat64(o,le)}};
+  const V=[],C=[],F=[];let hasC=false;
+  if(fmt==='ascii'){const tk=new TextDecoder().decode(u.subarray(bs)).split(/\s+/).filter(Boolean);let k=0;
+    els.forEach(el=>{for(let i=0;i<el.c;i++){const r={};el.p.forEach(p=>{if(p.list){const c=+tk[k++],a=[];for(let j=0;j<c;j++)a.push(+tk[k++]);r[p.n]=a}else r[p.n]=+tk[k++]});
+      if(el.n==='vertex'){V.push(r.x,r.y,r.z);if('red' in r){hasC=true;C.push(r.red/255,r.green/255,r.blue/255)}else C.push(.8,.8,.8)}else if(el.n==='face')F.push(r.vertex_indices||r.vertex_index||[])}})}
+  else{let o=bs;els.forEach(el=>{for(let i=0;i<el.c;i++){const r={};el.p.forEach(p=>{if(p.list){const c=rd(p.ct,o);o+=SZ[p.ct];const a=[];for(let j=0;j<c;j++){a.push(rd(p.t,o));o+=SZ[p.t]}r[p.n]=a}else{r[p.n]=rd(p.t,o);o+=SZ[p.t]}});
+      if(el.n==='vertex'){V.push(r.x,r.y,r.z);if('red' in r){hasC=true;C.push(r.red/255,r.green/255,r.blue/255)}else C.push(.8,.8,.8)}else if(el.n==='face')F.push(r.vertex_indices||r.vertex_index||[])}})}
+  const pos=[],col=[];const add=i=>{pos.push(V[i*3],V[i*3+1],V[i*3+2]);col.push(C[i*3],C[i*3+1],C[i*3+2])};
+  if(F.length){F.forEach(f=>{for(let i=1;i<f.length-1;i++){add(f[0]);add(f[i]);add(f[i+1])}})}else{for(let i=0;i+2<V.length/3;i+=3){add(i);add(i+1);add(i+2)}}
+  if(!pos.length)throw new Error('PLY sem triângulos.');return mzMeshOf(T,pos,hasC?col:null,false)}
+/* ---- Minhas estruturas: tudo que for importado fica guardado para reutilizar ---- */
+function mzSlibAdd(t){const M=MZ.M;if(!t||!t.glb)return;(M.slib||(M.slib=[])).push({id:mzId(),name:t.name,glb:t.glb,glbn:t.glbn||'',sz:t.sz||3});mzSave();mzPanel()}
+function mzSlibHtml(){const L=MZ.M.slib||[];if(!L.length)return '<p style="color:#9a9aa6;font-size:.8rem;margin:2px 0 10px">Formatos aceitos: .blend, .glb, .gltf, .obj (+.mtl e texturas), .fbx, .stl e .ply. Tudo que você importar fica guardado aqui em <b>Minhas estruturas</b> para adicionar quantas vezes quiser.</p>';
+  return '<h3>Minhas estruturas</h3>'+L.map(x=>'<div class="tr" style="cursor:default"><div class="th" style="border-color:#a347ff;background:#2a2238">⌂</div><div class="nm">'+esc(x.name)+' <small style="color:#9a9aa6">'+esc(x.glbn||'')+'</small><div style="margin-top:5px;font-size:.74rem;color:#9a9aa6">Tamanho <input type="number" step="0.5" min="0.5" max="12" value="'+x.sz+'" data-sl="'+x.id+'" style="width:64px"></div></div><button class="bt sm" data-z="slibadd" data-v="'+x.id+'">Adicionar</button><button class="bt d sm" data-z="slibdel" data-v="'+x.id+'" title="Tirar da lista">✕</button></div>').join('')}
+async function mzSlibUse(id){const M=MZ.M,x=(M.slib||[]).find(q=>q.id===id);if(!x)return;if(!mzScene()){note('Crie ou abra uma cena primeiro.');return}
+  if(!MZ.glbs[x.glb]){let b=null;try{b=await mzGet('g_'+MZ.cid+'_'+x.glb)}catch(e){}if(!b){note('O arquivo desse modelo não está mais salvo neste navegador. Importe de novo.');return}MZ.glbs[x.glb]=b}
+  const t=mzAddTok({name:x.name,sz:x.sz,glb:x.glb,glbn:x.glbn,rot:0,col:'#4a4a52'});if(!t)return;mzCommit();note(MZ.is3d?x.name+' adicionada.':x.name+' adicionada. Clique em 3D para ver.')}
 function mzNewGlb(files){const fl=[...files],tot=fl.reduce((a,x)=>a+x.size,0);if(!mzScene()){note('Crie ou abra uma cena primeiro.');return}if(tot>MZ_MAXM){note('Modelo muito grande (máx. 400 MB no total).');return}const mn=fl.find(x=>MZ_MEXT.test(x.name));if(!mn){note('Escolha um arquivo .glb, .gltf, .obj, .fbx ou .blend.');return}
-  note('Carregando modelo…');mzPack(fl).then(buf=>{const t=mzAddTok({name:mn.name.replace(/\.[^.]+$/,''),sz:3,glb:'',rot:0});if(t)mzSetModel(t,buf,mn.name.replace(/\.blend$/i,'.glb'))})}
+  note('Carregando modelo…');mzPack(fl).then(buf=>{const t=mzAddTok({name:mn.name.replace(/\.[^.]+$/,''),sz:3,glb:'',rot:0});if(t){mzSetModel(t,buf,mn.name.replace(/\.blend$/i,'.glb'));mzSlibAdd(t)}})}
 
 })();
 </script>
